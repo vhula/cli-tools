@@ -5,34 +5,26 @@
 Personal command-line tools written in Go.
 
 This repository is a learning and practice space inspired by the book
-_Powerful Command-Line Applications in Go_. The tools here are intentionally
-small and focused: each one explores a specific CLI pattern, standard-library
-feature, or testing approach while staying useful enough to run from a shell.
+_Powerful Command-Line Applications in Go_. Each tool is intentionally small,
+focused, and documented in its own directory.
+
+## Table of Contents
+
+- [Tools](#tools)
+- [Requirements](#requirements)
+- [Build](#build)
+- [Test](#test)
+- [Format](#format)
+- [Project Layout](#project-layout)
+- [Notes](#notes)
+- [License](#license)
 
 ## Tools
 
-### `wc`
-
-`wc` is a small word-count style utility. It reads from standard input and
-prints a single count.
-
-By default, it counts words:
-
-```sh
-echo "one two three" | ./build/wc
-```
-
-Count lines with `-l`:
-
-```sh
-printf "first\nsecond\n" | ./build/wc -l
-```
-
-Count bytes with `-b`:
-
-```sh
-printf "abc" | ./build/wc -b
-```
+| Tool | Description | Documentation |
+| --- | --- | --- |
+| `wc` | Counts words, lines, or bytes from standard input. | [wc/README.md](wc/README.md) |
+| `todo` | Stores and lists simple todo items in a JSON file. | [todo/README.md](todo/README.md) |
 
 ## Requirements
 
@@ -49,17 +41,16 @@ just build
 
 This writes binaries to `build/`.
 
-Build only `wc`:
+Build an individual tool directly:
 
 ```sh
-just build-wc
-```
+mkdir -p build
 
-You can also build it directly:
-
-```sh
 cd wc
 go build -o ../build/wc main.go
+
+cd ../todo
+go build -o ../build/todo cmd/main.go
 ```
 
 ## Test
@@ -74,6 +65,9 @@ Or run the Go tests directly:
 
 ```sh
 cd wc
+go test -v ./...
+
+cd ../todo
 go test -v ./...
 ```
 
@@ -91,8 +85,17 @@ just fmt
 .
 ├── Justfile        # Build, test, format, and clean tasks
 ├── LICENSE         # AGPL-3.0 license text
-├── README.md
+├── README.md       # Repository entry point
+├── assets/         # Shared documentation assets
+├── todo/           # JSON-backed todo list CLI
+│   ├── README.md
+│   ├── cmd/
+│   │   └── main.go
+│   ├── go.mod
+│   ├── todo.go
+│   └── todo_test.go
 └── wc/             # Word/line/byte counter CLI
+    ├── README.md
     ├── go.mod
     ├── main.go
     └── main_test.go
